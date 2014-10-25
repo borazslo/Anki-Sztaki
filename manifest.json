@@ -1,0 +1,26 @@
+{
+  "name": "AnkiSztaki",
+  "version": "0.1.1",
+  "manifest_version": 2,
+  "description": "Add any word and its translation from Sztaki dictionaries to your Anki 2",
+  "icons": {
+	
+  },
+  "content_scripts": [ {
+	  "js": [ "js/jquery.1.7.1.min.js", "js/startup.js" ],
+	  "matches": [ "http://szotar.sztaki.hu/*" ],
+	  "run_at": "document_end"
+   } ],
+  	"background": {
+    	"scripts": [ "js/jquery.1.7.1.min.js","bg.js"],
+    	"persistent": false
+  },
+  "permissions": [
+  "tabs",
+  "background",
+  "https://ankiweb.net/*"
+],
+  "options_page": "options.html",
+  "content_security_policy": "script-src 'self'; object-src 'self'"
+
+}
