@@ -114,7 +114,9 @@ function addWord(word,definition,tags) {
     var front = word;
     // replace html new line tags 
     var back = definition.replace(/\n/g, '<br />').replace(/\r/g, '');
-    
+    var front = word.replace(/\n/g, '<br />').replace(/\r/g, '');
+
+
     // fields contains two items: the word and its definition.
     // In general, however, can be an array with an ordered numbered of
     // fields, depending on the note type

@@ -25,7 +25,7 @@ function sztaki_addButton() {
             console.log((translation2));
 
 
-            chrome.extension.sendMessage({ action: 'send', word: word2, translation: translation2, tags: szotar }, function(response) {
+            chrome.extension.sendMessage({ action: 'send', word: word2, translation: translation2, tags: szotar + ' SZTAKI'}, function(response) {
                   console.log(response);
                   word.children('.toanki').html("[done]");
             });
@@ -36,8 +36,9 @@ function sztaki_addButton() {
 function sztaki_format_word(word) {
     var string;
 
-    string = '**' + word.children('.prop_content').text() + '**' + ' _' + word.children('.prop_pos').text() + '_';
-    if(word.children('.prop_ipaPronunciationUK').text()|| word.children('.prop_ipaPronunciationUK').text()) string = string + '\r\n';
+    string = '**' + word.children('.prop_content').text() + '**'
+    if(!(word.children('.prop_pos').text() === 'nincs')) string = string + ' _' + word.children('.prop_pos').text() + '_';
+    if(word.children('.prop_ipaPronunciationUK').text() || word.children('.prop_ipaPronunciationUSA').text()) string = string + '\n\n';
     if(word.children('.prop_ipaPronunciationUK').text()) string = string + ' [' + word.children('.prop_ipaPronunciationUK').text() + ']';
     if(word.children('.prop_ipaPronunciationUSA').text()) string = string + ' [' + word.children('.prop_ipaPronunciationUSA').text() + ']';
 
@@ -81,7 +82,7 @@ function sztaki_format_translation(translation) {
                     var word = $( this ).children();
 
 
-                    string = string + word.children('.prop_content').text();
+                    string = string + "**" + word.children('.prop_content').text() + "**"
                     if(word.children('.prop_ipaPronunciationUK').text()) string = string + ' [' + word.children('.prop_ipaPronunciationUK').text() + ']';
                     if(word.children('.prop_ipaPronunciationUSA').text()) string = string + ' [' + word.children('.prop_ipaPronunciationUSA').text() + ']';
 
@@ -92,12 +93,17 @@ function sztaki_format_translation(translation) {
 
 
 
-                    if(subLength > i) string = string + "\r\n";
+                    if(subLength > i) string = string + "\n";
                     i++;
 
             });
         } else {
-            
+
+            if($( this ).children('.prop_geoQualification').length > 0 ) { 
+               $( this ).children('.prop_geoQualification').each(function(){
+                    string = string + ' _(' + $( this ).text() + ')_ ';       
+                });
+            }
             if($( this ).children('.prop_thematicQualification').length > 0 ) { 
                $( this ).children('.prop_thematicQualification').each(function(){
                     string = string + ' _(' + $( this ).text() + ')_ ';       
@@ -117,7 +123,12 @@ function sztaki_format_translation(translation) {
                             string = string + ' _(' + $( this ).text() + ')_ ';       
                         });
                 }
-                string = string + word.children('.prop_content').text();
+                if(word.children('.prop_geoQualification').length > 0 ) { 
+                    word.children('.prop_geoQualification').each(function(){
+                        string = string + ' _(' + $( this ).text() + ')_ ';       
+                    });
+                }
+                string = string + "**" + word.children('.prop_content').text() + "**" ;
                 if(word.children('.prop_ipaPronunciationUK').text()) string = string + ' [' + word.children('.prop_ipaPronunciationUK').text() + ']';
                 if(word.children('.prop_ipaPronunciationUSA').text()) string = string + ' [' + word.children('.prop_ipaPronunciationUSA').text() + ']';
 
@@ -125,7 +136,7 @@ function sztaki_format_translation(translation) {
                  c++;
             });
         }
-        if(co < max) string = string + '\r\n';
+        if(co < max) string = string + '\n';
         co++;
     });
  
